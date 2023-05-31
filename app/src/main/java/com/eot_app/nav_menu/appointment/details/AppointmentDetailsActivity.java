@@ -14,6 +14,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.text.SpannableString;
 import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
@@ -53,7 +54,8 @@ import com.eot_app.nav_menu.client.client_db.Client;
 import com.eot_app.nav_menu.client.clientlist.client_detail.site.sitelist.editsite.editsitedb.SpinnerCountrySite;
 import com.eot_app.nav_menu.jobs.add_job.Add_job_activity;
 import com.eot_app.nav_menu.jobs.job_db.Job;
-import com.eot_app.nav_menu.jobs.job_detail.JobDetailActivity;
+import com.eot_app.nav_menu.jobs.job_detail.JobDetailActivity;import com.eot_app.nav_menu.jobs.job_detail.addinvoiveitem2pkg.AddEditInvoiceItemActivity2;
+import com.eot_app.nav_menu.jobs.job_detail.addinvoiveitem2pkg.model.InvoiceItemDataModel;
 import com.eot_app.nav_menu.quote.add_quotes_pkg.AddQuotes_Activity;
 import com.eot_app.nav_menu.quote.quote_invoice_pkg.Quote_Invoice_Details_Activity;
 import com.eot_app.services.Service_apis;
@@ -68,6 +70,7 @@ import com.google.gson.Gson;
 import com.hypertrack.hyperlog.HyperLog;
 
 import java.io.File;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -78,16 +81,21 @@ import java.util.concurrent.Callable;
 import static com.eot_app.nav_menu.jobs.job_detail.detail.DetailFragment.MY_PERMISSIONS_REQUEST_CALL_PHONE;
 
 public class AppointmentDetailsActivity extends UploadDocumentActivity
-        implements View.OnClickListener, AttachementAdapter.OnItemSelection , Doc_Attch_View {
+        implements View.OnClickListener, AttachementAdapter.OnItemSelection , Doc_Attch_View  {
     private static final int EDIT_APPOINTMENT_CODE = 10;
     private static final int UPLOADED_NEW_LIST = 148;
     private final int ADD_QUOTE_RESULT = 123;
+    private final int GET_ITEM_LIST = 05;
 
-    ArrayList<AppointmentAttachment> allAttachmentList=new ArrayList<>();
+    RequirementGetheringListAdapter getheringListAdapter;
+
+    ArrayList<AppointmentAttachment> allAttachmentList = new ArrayList<>();
     ActivityAppointmentDetailsBinding binding;
     AppointmentDetailsViewModel detailsViewModel;
+    List<InvoiceItemDataModel> itemDataModels;
     Appointment model = new Appointment();
     Doc_Attch_Pi doc_attch_pi;
+    ArrayList<InvoiceItemDataModel> additemlist;
 
     private final BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
         @Override
@@ -118,8 +126,6 @@ public class AppointmentDetailsActivity extends UploadDocumentActivity
         binding.tvLableScheduleDateTime.setText(LanguageController.getInstance().getMobileMsgByKey(AppConstant.appointment_start_end));
         binding.tvViewOnMap.setText(LanguageController.getInstance().getMobileMsgByKey(AppConstant.view_on_map));
         binding.tbLabelAttachment.setText(LanguageController.getInstance().getMobileMsgByKey(AppConstant.document));
-        binding.tvFabAddQuote.setText(LanguageController.getInstance().getMobileMsgByKey(AppConstant.create_quotation));
-        binding.tvFabJob.setText(LanguageController.getInstance().getMobileMsgByKey(AppConstant.title_add_job));
         binding.checkboxSelectAll.setText(LanguageController.getInstance().getMobileMsgByKey(AppConstant.select_all));
         binding.tvExportAll.setText(LanguageController.getInstance().getMobileMsgByKey(AppConstant.export_document));
         binding.tvLabelQuotation.setText(LanguageController.getInstance().getMobileMsgByKey(AppConstant.quotation_label));
@@ -141,6 +147,10 @@ public class AppointmentDetailsActivity extends UploadDocumentActivity
         if (model != null) {
             setDataInUI(model);
         }
+
+
+
+
         binding.recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
         binding.recyclerView.setNestedScrollingEnabled(false);
 
@@ -188,11 +198,20 @@ public class AppointmentDetailsActivity extends UploadDocumentActivity
         });
 
         binding.checkboxSelectAll.setOnCheckedChangeListener(selectAllListener());
-        binding.fab.setOnClickListener(this);
         binding.backgroundView.setOnClickListener(this);
         binding.linearFabQuote.setOnClickListener(this);
         binding.linearFabJob.setOnClickListener(this);
         binding.tvExportAll.setOnClickListener(this);
+        binding.seemore.setOnClickListener(this);
+        binding.seeless.setOnClickListener(this);
+       
+        binding.addItem.setOnClickListener(view -> {
+            Intent intent = new Intent(this, AddEditInvoiceItemActivity2.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+            intent.putExtra("req", "yes");
+            startActivityForResult(intent,GET_ITEM_LIST);
+
+        });
 
         binding.btnAppointmentDone.setOnClickListener(v -> {
             if (model != null && !model.getTempId().equals(model.getAppId())) {
@@ -276,7 +295,6 @@ public class AppointmentDetailsActivity extends UploadDocumentActivity
             } else {
                 //    binding.tvDes.setVisibility(View.GONE);
             }
-
 
 
         } catch (Exception exception) {
@@ -595,7 +613,7 @@ public class AppointmentDetailsActivity extends UploadDocumentActivity
                     if (model.getTempId().equals(model.getAppId()))
                         showDialogs(LanguageController.getInstance().getMobileMsgByKey(AppConstant.appointment_not_sync));
                     else {
-                        closeFABMenu();
+                        //closeFABMenu();
                         Intent intent = new Intent(this, AddQuotes_Activity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                         startActivityForResult(intent.putExtra("appointmentId", model.getAppId()), ADD_QUOTE_RESULT);
@@ -608,7 +626,7 @@ public class AppointmentDetailsActivity extends UploadDocumentActivity
                     if (model.getTempId().equals(model.getAppId()))
                         showDialogs(LanguageController.getInstance().getMobileMsgByKey(AppConstant.appointment_not_sync));
                     else {
-                        closeFABMenu();
+                        //  closeFABMenu();
                         Intent open_add_job = new Intent(AppointmentDetailsActivity.this, Add_job_activity.class);
                         open_add_job.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                         startActivity(open_add_job.putExtra("appId", model.getAppId()));
@@ -640,8 +658,19 @@ public class AppointmentDetailsActivity extends UploadDocumentActivity
             case R.id.tv_export_all:
                 exportDocument();
                 break;
-        }
+            case R.id.seemore:
+                binding.seemore.setVisibility(View.GONE);
+                binding.seeless.setVisibility(View.VISIBLE);
+                binding.LayoutForSeeMoreLess.setVisibility(View.VISIBLE);
+                break;
+            case R.id.seeless:
+                binding.seemore.setVisibility(View.VISIBLE);
+                binding.seeless.setVisibility(View.GONE);
+                binding.LayoutForSeeMoreLess.setVisibility(View.GONE);
+                break;
 
+
+        }
     }
 
     private void exportDocument() {
@@ -693,8 +722,8 @@ public class AppointmentDetailsActivity extends UploadDocumentActivity
 
 
     @Override
-    public void onDocumentSelected(String path,String name, boolean isImage) {
-        super.onDocumentSelected(path,name, isImage);
+    public void onDocumentSelected(String path, String name, boolean isImage) {
+        super.onDocumentSelected(path, name, isImage);
         if (path != null) {
             try {
                 if (isImage) {
@@ -742,35 +771,32 @@ public class AppointmentDetailsActivity extends UploadDocumentActivity
             case UPLOADED_NEW_LIST:
                 if (data != null && data.hasExtra("imgPath")) {
                     String fileNameExt = AppUtility.getFileNameWithExtension(data.getStringExtra("imgPath"));
-                    String bitmapString="";
-                    if(data.getBooleanExtra("isFileImage",false)){
+                    String bitmapString = "";
+                    if (data.getBooleanExtra("isFileImage", false)) {
                         Bitmap bitmap = AppUtility.getBitmapFromPath(data.getStringExtra("imgPath"));
                         bitmapString = AppUtility.BitMapToString(bitmap);
                     }
-                    AppointmentAttachment obj=new AppointmentAttachment("0",fileNameExt,fileNameExt,bitmapString);
-                    ArrayList<AppointmentAttachment> getFileList_res =new ArrayList<>();
+                    AppointmentAttachment obj = new AppointmentAttachment("0", fileNameExt, fileNameExt, bitmapString);
+                    ArrayList<AppointmentAttachment> getFileList_res = new ArrayList<>();
                     getFileList_res.add(obj);
 
                     if (allAttachmentList != null) {
                         getFileList_res.addAll(allAttachmentList);
                     }
                     if (attachementAdapter != null) {
-                        allAttachmentList=getFileList_res;
+                        allAttachmentList = getFileList_res;
                         attachementAdapter.setList(getFileList_res);
                         binding.nolistLinear.setVisibility(View.GONE);
                     }
                     if (doc_attch_pi != null) {
-                        if(data.getStringExtra("fileName")!=null){
-                            try
-                            {
+                        if (data.getStringExtra("fileName") != null) {
+                            try {
                                 doc_attch_pi.uploadDocuments(data.getStringExtra("appId"),
                                         data.getStringExtra("imgPath"),
                                         data.getStringExtra("fileName"),
                                         data.getStringExtra("desc"));
-                            }
-                            catch (Exception e)
-                            {
-                                if (getFileList_res.size()==1) {
+                            } catch (Exception e) {
+                                if (getFileList_res.size() == 1) {
                                     allAttachmentList.remove(getFileList_res.get(0));
                                     attachementAdapter.setList(getFileList_res);
                                 }
@@ -780,10 +806,22 @@ public class AppointmentDetailsActivity extends UploadDocumentActivity
                     }
                 }
                 break;
+            case GET_ITEM_LIST:
+                if(data!=null)
+                {
+                    itemDataModels = data.getParcelableArrayListExtra("additemlist");
+                    setListRequirmentGetheringAdapter(itemDataModels);
+                }
 
 
         }
         super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    private void setListRequirmentGetheringAdapter(List<InvoiceItemDataModel> itemDataModels) {
+        getheringListAdapter = new RequirementGetheringListAdapter(this, itemDataModels);
+        binding.recyclerOfReqGeth.setAdapter(getheringListAdapter);
+
     }
 
 
@@ -816,17 +854,17 @@ public class AppointmentDetailsActivity extends UploadDocumentActivity
         if (App_preference.getSharedprefInstance().getLoginRes().getRights().get(0).getIsQuoteVisible() == 0)
             binding.linearFabQuote.setVisibility(View.VISIBLE);
         binding.linearFabJob.setVisibility(View.VISIBLE);
-        binding.linearFabJob.animate().translationY(getResources().getDimension(R.dimen.standard_55));
-        binding.linearFabQuote.animate().translationY(getResources().getDimension(R.dimen.standard_100));
+        //binding.linearFabJob.animate().translationY(getResources().getDimension(R.dimen.standard_55));
+        //binding.linearFabQuote.animate().translationY(getResources().getDimension(R.dimen.standard_100));
         isFBMenuOpened = true;
     }
 
     private void closeFABMenu() {
         isFBMenuOpened = false;
-        binding.linearFabJob.animate().translationY(0);
-        binding.linearFabQuote.animate().translationY(0);
+        //binding.linearFabJob.animate().translationY(0);
+        //binding.linearFabQuote.animate().translationY(0);
 
-        binding.linearFabQuote.animate().translationY(0).setListener(new Animator.AnimatorListener() {
+      /*  binding.linearFabQuote.animate().translationY(0).setListener(new Animator.AnimatorListener() {
             @Override
             public void onAnimationStart(Animator animator) {
 
@@ -854,6 +892,7 @@ public class AppointmentDetailsActivity extends UploadDocumentActivity
             }
         });
 
+*/
     }
 
     @Override
@@ -952,22 +991,22 @@ public class AppointmentDetailsActivity extends UploadDocumentActivity
     @Override
     public void setList(ArrayList<AppointmentAttachment> getFileList_res) {
         // remove the temporary added item for showing loader
-        if (allAttachmentList != null&&!allAttachmentList.isEmpty()) {
+        if (allAttachmentList != null && !allAttachmentList.isEmpty()) {
             int position = -1;
             for (int i = 0; i < allAttachmentList.size(); i++) {
-                if(allAttachmentList.get(i).getAttachmentId().equalsIgnoreCase("0")){
-                    position=i;
+                if (allAttachmentList.get(i).getAttachmentId().equalsIgnoreCase("0")) {
+                    position = i;
                     break;
                 }
             }
-            if(position!=-1)
+            if (position != -1)
                 allAttachmentList.remove(allAttachmentList.get(position));
         }
         // to add the new entry into existing list
-        if (getFileList_res != null&& attachementAdapter != null) {
+        if (getFileList_res != null && attachementAdapter != null) {
             assert allAttachmentList != null;
             getFileList_res.addAll(allAttachmentList);
-            allAttachmentList=getFileList_res;
+            allAttachmentList = getFileList_res;
             attachementAdapter.setList(getFileList_res);
             binding.nolistLinear.setVisibility(View.GONE);
         }
@@ -992,4 +1031,5 @@ public class AppointmentDetailsActivity extends UploadDocumentActivity
     public void onDocumentUpdate(String msg, boolean isSuccess) {
 
     }
+
 }

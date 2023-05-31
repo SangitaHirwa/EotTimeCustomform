@@ -2,11 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/EotTimeCustomform.iml" filepath="$PROJECT_DIR$/.idea/EotTimeCustomform.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/EotTimeCustomform.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/EotTimeCustomform.app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/EotTimeCustomform.app.androidTest.iml" filepath="$PROJECT_DIR$/.idea/modules/app/EotTimeCustomform.app.androidTest.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/EotTimeCustomform.app.main.iml" filepath="$PROJECT_DIR$/.idea/modules/app/EotTimeCustomform.app.main.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/EotTimeCustomform.app.unitTest.iml" filepath="$PROJECT_DIR$/.idea/modules/app/EotTimeCustomform.app.unitTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/EotAppoint.iml" filepath="$PROJECT_DIR$/.idea/modules/EotAppoint.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/EotAppoint.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/EotAppoint.app.iml" />
     </modules>
   </component>
 </project>

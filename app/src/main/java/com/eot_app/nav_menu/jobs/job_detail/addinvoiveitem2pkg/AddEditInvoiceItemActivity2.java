@@ -9,6 +9,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Parcelable;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -35,6 +36,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.eot_app.R;
 import com.eot_app.login_next.FooterMenu;
 import com.eot_app.login_next.login_next_model.CompPermission;
+import com.eot_app.nav_menu.appointment.details.AppointmentDetailsActivity;
 import com.eot_app.nav_menu.jobs.job_db.Job;
 import com.eot_app.nav_menu.jobs.job_detail.addinvoiveitem2pkg.model.AddInvoiceItemReqModel;
 import com.eot_app.nav_menu.jobs.job_detail.addinvoiveitem2pkg.model.InvoiceItemDataModel;
@@ -67,6 +69,7 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.google.gson.Gson;
 import com.hypertrack.hyperlog.HyperLog;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -80,8 +83,9 @@ public class AddEditInvoiceItemActivity2 extends
         AddEditInvoiceItem_View, TextWatcher,
         View.OnFocusChangeListener,
         View.OnClickListener,
-        RadioGroup.OnCheckedChangeListener {
+        RadioGroup.OnCheckedChangeListener  {
     public static final int EQUIPMENTCONVERT = 201;
+     List<InvoiceItemDataModel> itemDataList;
     RelativeLayout ll_note;
     View nm_view, desc_view, qty_view, rate_view, supplier_view, disc_view, tax_view, amount_view, part_no_view, hsncode_view, unit_view, taxrateAmount_view, seroal_no_view, tax_rate_view;
     TextView tax_value_txt, tax_txt_hint, amount_value_txt, taxamount_txt_hint, taxamount_value_txt, amount_txt_hint;
@@ -135,6 +139,7 @@ public class AddEditInvoiceItemActivity2 extends
     private RadioButton radio_billable, radio_none_billable;
     private boolean NOITEMRELECT = false, NONBILLABLE = false;
     private ImageButton tax_cancel;
+
 
 
     @Override
@@ -197,6 +202,35 @@ public class AddEditInvoiceItemActivity2 extends
                 invoiceItemPi.getTaxList();
                 goneViewsForUpdate();
             }
+            else if(getIntent().hasExtra("req")){
+                item_partNo_layout.setVisibility(View.GONE);
+                part_no_view.setVisibility(View.GONE);
+                serialNo_layout.setVisibility(View.GONE);
+                seroal_no_view.setVisibility(View.GONE);
+                item_hsnCode_layout.setVisibility(View.GONE);
+                hsncode_view.setVisibility(View.GONE);
+                item_qty_layout.setVisibility(View.GONE);
+                qty_view.setVisibility(View.GONE);
+                item_rate_layout.setVisibility(View.GONE);
+                rate_view.setVisibility(View.GONE);
+                item_tax_rate_layout.setVisibility(View.GONE);
+                tax_rate_view.setVisibility(View.GONE);
+                item_supplier_layout.setVisibility(View.GONE);
+                supplier_view.setVisibility(View.GONE);
+                item_unit_layout.setVisibility(View.GONE);
+                unit_view.setVisibility(View.GONE);
+                item_discount_layout.setVisibility(View.GONE);
+                disc_view.setVisibility(View.GONE);
+                tax_layout.setVisibility(View.GONE);
+                tax_view.setVisibility(View.GONE);
+                rediogrp.setVisibility(View.GONE);
+                taxamount_layout.setVisibility(View.GONE);
+                amount_view.setVisibility(View.GONE);
+                amount_layout.setVisibility(View.GONE);
+                amount_view.setVisibility(View.GONE);
+
+            }
+            if(!getIntent().hasExtra("req"))
             getJobById();
         } else {
             return;
@@ -1295,10 +1329,18 @@ public class AddEditInvoiceItemActivity2 extends
                 exception.printStackTrace();
             }
 
-            List<InvoiceItemDataModel> itemDataList = new ArrayList<>();
+            itemDataList = new ArrayList<>();
 
             itemDataList.add(addItemDataModel);
 
+          if(getIntent().hasExtra("req"))
+          {
+              Intent intent=new Intent();
+              intent.putParcelableArrayListExtra("additemlist", (ArrayList<InvoiceItemDataModel>) itemDataList);
+              setResult(RESULT_OK,intent);
+              finish();
+
+          }
 
             // for adding parts
             // changes by shivani
@@ -2412,5 +2454,10 @@ public class AddEditInvoiceItemActivity2 extends
 
     }
 
+
 }
+
+
+
+
 

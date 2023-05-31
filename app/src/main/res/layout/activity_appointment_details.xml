@@ -14,10 +14,17 @@
         android:id="@+id/parent_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+        <FrameLayout
+            android:id="@+id/fm"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
 
             <androidx.core.widget.NestedScrollView
                 android:layout_width="match_parent"
@@ -28,21 +35,33 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="vertical"
-                    android:padding="14dp">
+                    android:id="@+id/ll1"
+                    >
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/bg_chat_header"
+                        android:orientation="vertical"
+
+                        >
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:orientation="horizontal">
+                        android:orientation="horizontal"
+                        android:paddingLeft="14dp"
+                        android:paddingRight="14dp">
 
                         <TextView
-                            android:id="@+id/tv_client_name"
+                            android:id="@+id/timeDate"
                             style="@style/style_sec"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text=""
+                            android:text="04:15am 10_may_2023"
+                            android:textSize="11sp"
+                            android:textColor="@color/payment_text_two"
                             android:textStyle="bold" />
 
                         <androidx.appcompat.widget.AppCompatButton
@@ -95,12 +114,22 @@
                             android:layout_height="wrap_content"
                             app:srcCompat="@drawable/svg_email_yellow" />
                     </LinearLayout>
+                    <TextView
+                        android:id="@+id/tv_client_name"
+                        style="@style/style_sec"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="sangita"
+                        android:textStyle="bold"
+                        android:paddingLeft="14dp"
+                        />
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
-                        android:orientation="horizontal">
+                        android:orientation="horizontal"
+                        android:paddingLeft="14dp">
 
                         <androidx.appcompat.widget.AppCompatImageView
                             android:layout_width="wrap_content"
@@ -126,8 +155,42 @@
                         android:layout_marginStart="26dp"
                         android:layout_marginTop="10dp"
                         android:text="@string/view_on_map"
-                        android:textColor="#EBB057" />
+                        android:textColor="#EBB057"
+                        android:paddingLeft="14dp"/>
 
+                   <LinearLayout
+                       android:layout_width="match_parent"
+                       android:layout_height="wrap_content"
+                       android:orientation="horizontal"
+                       android:id="@+id/seemore"
+                      android:gravity="center"
+                       >
+                       <TextView
+                           android:layout_width="wrap_content"
+                           android:layout_height="wrap_content"
+                           android:text="See More"
+                           android:textSize="11sp"
+                           style="@style/style_sec"
+                           android:textStyle="normal"
+
+                           android:textColor="@color/colorPrimary"
+                           />
+                       <ImageView
+                           android:layout_width="wrap_content"
+                           android:layout_height="wrap_content"
+                           android:src="@drawable/ic_arrow_drop_down_black_24dp"
+                           />
+                   </LinearLayout>
+                    </LinearLayout>
+                    <LinearLayout
+                        android:id="@+id/LayoutForSeeMoreLess"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:visibility="gone"
+                        android:orientation="vertical"
+                        android:paddingLeft="14dp"
+                        android:background="@color/bg_chat_header"
+                        >
 
                     <View
                         android:layout_width="match_parent"
@@ -416,7 +479,8 @@
                     <FrameLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_marginTop="10dp">
+                        android:layout_marginTop="10dp"
+                        android:paddingLeft="14dp">
 
                         <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/recyclerView"
@@ -455,10 +519,140 @@
                             android:layout_gravity="center"
                             android:visibility="gone" />
                     </FrameLayout>
+                    </LinearLayout>
 
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:id="@+id/seeless"
+                    android:background="@color/bg_chat_header"
+                    android:visibility="gone"
+                    android:gravity="center"
+
+                    >
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="See Less"
+                        android:textSize="11sp"
+                        style="@style/style_sec"
+                        android:textColor="@color/colorPrimary"
+                        />
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_baseline_arrow_drop_up_24"
+                        />
                 </LinearLayout>
-
+                    <TextView
+                        android:id="@+id/requirment_tv"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Requirment Gethering"
+                        android:textStyle="bold"
+                        android:padding="5dp"
+                        android:paddingLeft="14dp"
+                        style="@style/style_sec_sec"
+                        android:textSize="15sp"
+                        />
+                    <LinearLayout
+                        android:id="@+id/addItem"
+                        android:layout_width="wrap_content"
+                        android:layout_height="33dp"
+                        android:orientation="horizontal"
+                        android:paddingLeft="24dp"
+                        android:layout_marginLeft="10dp"
+                       android:padding="5dp"
+                        android:gravity="center"
+                        android:background="@drawable/requirbottonshap"
+                        >
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Add"
+                            android:textSize="13dp"
+                            style="@style/style_sec_sec"
+                            android:layout_margin="5dp"
+                            android:textStyle="bold"
+                            android:textColor="@color/white"
+                            />
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_baseline_arrow_drop_down_24"/>
+                    </LinearLayout>
+                </LinearLayout>
             </androidx.core.widget.NestedScrollView>
+        </FrameLayout>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:paddingLeft="14dp"
+                        android:layout_below="@+id/fm"
+                        android:layout_marginTop="10dp"
+                        android:nestedScrollingEnabled="false"
+
+                        >
+                        <LinearLayout
+                            android:id="@+id/ll_list"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+
+                            >
+                        <androidx.recyclerview.widget.RecyclerView
+
+                            android:id="@+id/recyclerOfReqGeth"
+                            android:layout_width="match_parent"
+                            android:layout_height="350dp"
+                            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+                            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                            />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/layoutForConverterBtn"
+                            android:layout_width="match_parent"
+                            android:layout_height="80dp"
+                            android:orientation="horizontal"
+                            android:weightSum="2"
+                           android:layout_below="@+id/ll_list"
+                            android:background="@color/white"
+                            android:gravity="center"
+                            >
+
+                            <Button
+                                android:id="@+id/linearFabQuote"
+                                android:layout_width="wrap_content"
+                                android:layout_height="35dp"
+                                android:textAllCaps="false"
+                                android:background="@drawable/requirbottonshap"
+                                android:paddingRight="2dp"
+                                android:layout_margin="8dp"
+                                android:layout_weight="1"
+                                android:text="Convert To Quote"
+
+                                android:textColor="@color/white" />
+
+                            <Button
+                                android:id="@+id/linearFabJob"
+                                android:layout_width="wrap_content"
+                                android:layout_height="35dp"
+                                android:background="@drawable/requirbottonshap"
+                                android:paddingLeft="2dp"
+                                android:layout_weight="1"
+                                android:textAllCaps="false"
+                                android:layout_margin="8dp"
+                                android:text="Convert To Job"
+                                android:textColor="@color/white" />
+                        </LinearLayout>
+
+
+                    </RelativeLayout>
 
             <View
                 android:id="@+id/backgroundView"
@@ -466,77 +660,7 @@
                 android:layout_height="match_parent"
                 android:background="#90ffffff"
                 android:visibility="gone" />
+</RelativeLayout>
         </FrameLayout>
-
-        <LinearLayout
-            android:id="@+id/linearFabJob"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|end"
-            android:layout_margin="10dp"
-            android:orientation="horizontal"
-            android:visibility="gone">
-
-            <TextView
-                android:id="@+id/tv_fab_job"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:background="@color/white"
-                android:padding="3dp"
-                android:textColor="@color/body_font_color" />
-
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:tint="@color/white"
-                app:fabSize="mini"
-                app:maxImageSize="20dp"
-                app:srcCompat="@drawable/ic_job"
-                app:useCompatPadding="true"
-                tools:ignore="ContentDescription" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/linearFabQuote"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|end"
-            android:layout_margin="10dp"
-            android:orientation="horizontal"
-            android:visibility="gone">
-
-            <TextView
-                android:id="@+id/tv_fab_add_quote"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:background="@color/white"
-                android:padding="3dp"
-                android:textColor="@color/body_font_color" />
-
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:tint="@color/white"
-                app:fabSize="mini"
-                app:maxImageSize="20dp"
-                app:srcCompat="@drawable/ic_quote"
-                app:useCompatPadding="true"
-                tools:ignore="ContentDescription" />
-        </LinearLayout>
-
-
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/fab"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|end"
-            android:layout_margin="@dimen/fab_margin"
-            android:visibility="visible"
-            app:srcCompat="@drawable/ic_generate_invoice"
-            tools:ignore="ContentDescription" />
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>
